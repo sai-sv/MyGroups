@@ -1,0 +1,6 @@
+framework module Pods_MyGroups {
+  umbrella header "Pods-MyGroups-umbrella.h"
+
+  export *
+  module * { export * }
+}

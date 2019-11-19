@@ -6,22 +6,21 @@
 //  Copyright © 2019 Sergei Sai. All rights reserved.
 //
 
-import UIKit
+import RealmSwift
 
-struct Group {
-    var name: String!
-    var location: String?
-    var genre: String?
-    var image: UIImage?
-    var imageName: String?
+class Group: Object {
     
-    static let groupsList = ["Ajattara", "Amon Amarth", "Beseech", "Children Of Bodom", "Dimmu Borgir", "Eluveitie", "Kalmah", "Kataklysm", "Metallica", "Nightwish", "Rammstein", "Sepultura", "Slipknot", "Soulfly"]
+    @objc dynamic var name = ""
+    @objc dynamic var location: String?
+    @objc dynamic var genre: String?
+    @objc dynamic var imageData: Data?
     
-    static func getGroups() -> [Group] {
-        var groups = [Group]()
-        for group in groupsList {
-            groups.append(Group(name: group, location: "Earth Planet", genre: "Metal", image: nil, imageName: group))
-        }
-        return groups
+    convenience init(name: String, location: String?, genre: String?, imageData: Data?) {
+        self.init()
+        
+        self.name = name
+        self.location = location
+        self.genre = genre
+        self.imageData = imageData
     }
 }

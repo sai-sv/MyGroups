@@ -7,20 +7,23 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MainViewController: UITableViewController {
        
-    var groups = Group.getGroups()
+    var groups: Results<Group>!
     var isImageChanged = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        groups = realm.objects(Group.self)
     }
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groups.count
+        return groups.isEmpty ? 0 : groups.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -32,12 +35,7 @@ class MainViewController: UITableViewController {
         cell.locationLabel.text = group.location
         cell.genreLabel.text = group.genre
         
-        if group.image == nil {
-            cell.imageOfGroup.image = UIImage(named: groups[indexPath.row].imageName!)
-        } else {
-            cell.imageOfGroup.image = group.image
-        }
-        
+        cell.imageOfGroup.image = UIImage(data: group.imageData!)
         cell.imageOfGroup.layer.cornerRadius = cell.imageOfGroup.frame.size.height / 2
         cell.imageOfGroup.clipsToBounds = true
 
@@ -55,10 +53,9 @@ class MainViewController: UITableViewController {
     */
     
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
-        guard let svc = segue.source as? NewGroupTableViewController else { return }
         
+        guard let svc = segue.source as? NewGroupTableViewController else { return }
         svc.saveNewGroup()
-        groups.append(svc.group!)
         
         tableView.reloadData()
     }

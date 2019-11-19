@@ -16,15 +16,12 @@ class NewGroupTableViewController: UITableViewController {
     @IBOutlet weak var groupLocation: UITextField!
     @IBOutlet weak var groupGenre: UITextField!
     
-    var group: Group?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.tableFooterView = UIView() // скрываем пустые разлинованные строки таблицы
-        
-//        saveButton.isEnabled = false
-        groupName.addTarget(self, action: #selector(groupNameChanged), for: .valueChanged)
+        saveButton.isEnabled = false
+        groupName.addTarget(self, action: #selector(groupNameChanged), for: .editingChanged)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -67,8 +64,9 @@ class NewGroupTableViewController: UITableViewController {
     
     func saveNewGroup() {
         
-//        group = Group(name: groupName.text!, location: groupLocation.text, genre: groupGenre.text, image: groupImage.image, imageName: nil)
-        group = Group(name: "TestGroup", location: groupLocation.text, genre: groupGenre.text, image: groupImage.image, imageName: nil)
+        guard let imageData = groupImage.image?.pngData() else { return }
+        let group = Group(name: groupName.text!, location: groupLocation.text, genre: groupGenre.text, imageData: imageData)
+        StorageManager.saveObject(group)
     }
 }
 
@@ -82,7 +80,7 @@ extension NewGroupTableViewController: UITextFieldDelegate {
     }
     
     @objc private func groupNameChanged() {
-        //saveButton.isEnabled = groupName.text?.isEmpty == false
+        saveButton.isEnabled = groupName.text?.isEmpty == false
     }
 }
 
