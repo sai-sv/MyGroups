@@ -9,8 +9,9 @@
 import UIKit
 
 class MainViewController: UITableViewController {
-
-    let groupsList = ["Ajattara", "Amon Amarth", "Beseech", "Children Of Bodom", "Dimmu Borgir", "Eluveitie", "Kalmah", "Kataklysm", "Metallica", "Nightwish", "Rammstein", "Sepultura", "Slipknot", "Soulfly"]
+       
+    var groups = Group.getGroups()
+    var isImageChanged = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,26 +20,30 @@ class MainViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groupsList.count
+        return groups.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
 
-        cell.nameLabel.text = groupsList[indexPath.row]
-        cell.groupImageView.image = UIImage(named: groupsList[indexPath.row])
-        cell.groupImageView.layer.cornerRadius = cell.groupImageView.frame.size.height / 2
-        cell.groupImageView.clipsToBounds = true
+        let group = groups[indexPath.row]
         
+        cell.nameLabel.text = group.name
+        cell.locationLabel.text = group.location
+        cell.genreLabel.text = group.genre
+        
+        if group.image == nil {
+            cell.imageOfGroup.image = UIImage(named: groups[indexPath.row].imageName!)
+        } else {
+            cell.imageOfGroup.image = group.image
+        }
+        
+        cell.imageOfGroup.layer.cornerRadius = cell.imageOfGroup.frame.size.height / 2
+        cell.imageOfGroup.clipsToBounds = true
 
         return cell
     }
     
-    // MARK: - Table view delegate
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 85
-    }
-
     /*
     // MARK: - Navigation
 
@@ -48,4 +53,13 @@ class MainViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+        guard let svc = segue.source as? NewGroupTableViewController else { return }
+        
+        svc.saveNewGroup()
+        groups.append(svc.group!)
+        
+        tableView.reloadData()
+    }
 }
