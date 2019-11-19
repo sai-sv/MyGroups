@@ -21,7 +21,6 @@ class MainViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groups.isEmpty ? 0 : groups.count
     }
@@ -41,6 +40,22 @@ class MainViewController: UITableViewController {
 
         return cell
     }
+    
+    // MARK: Table view delegate
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let action = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
+            
+            // delete data
+            let group = self.groups[indexPath.row]
+            StorageManager.deleteObject(group)
+            // delete row
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        let actionsCOnfiguration = UISwipeActionsConfiguration(actions: [action])
+        return actionsCOnfiguration
+    }
+    
     
     /*
     // MARK: - Navigation

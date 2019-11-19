@@ -18,4 +18,10 @@ class StorageManager {
             realm.add(group)
         }
     }
+    
+    static func deleteObject(_ group: Group) {
+        try! realm.write {
+            realm.delete(group)
+        }
+    }
 }
