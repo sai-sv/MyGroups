@@ -41,7 +41,7 @@ class MainViewController: UITableViewController {
         return cell
     }
     
-    // MARK: Table view delegate
+    // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let action = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
@@ -57,20 +57,22 @@ class MainViewController: UITableViewController {
     }
     
     
-    /*
+    
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "showDetail" {
+            guard let dvc = segue.destination as? NewGroupTableViewController else { return }
+            guard let indexPath = tableView.indexPathForSelectedRow else { return }
+            
+            dvc.currentGroup = groups[indexPath.row]
+        }
     }
-    */
     
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
         
         guard let svc = segue.source as? NewGroupTableViewController else { return }
-        svc.saveNewGroup()
+        svc.saveGroup()
         
         tableView.reloadData()
     }

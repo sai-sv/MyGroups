@@ -10,6 +10,8 @@ import UIKit
 
 class NewGroupTableViewController: UITableViewController {
 
+    var currentGroup: Group?
+    
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var groupImage: UIImageView!
     @IBOutlet weak var groupName: UITextField!
@@ -22,6 +24,8 @@ class NewGroupTableViewController: UITableViewController {
         tableView.tableFooterView = UIView() // скрываем пустые разлинованные строки таблицы
         saveButton.isEnabled = false
         groupName.addTarget(self, action: #selector(groupNameChanged), for: .editingChanged)
+        
+        setupEditScreen()
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -58,19 +62,57 @@ class NewGroupTableViewController: UITableViewController {
         }
     }
     
+    // navigation bar Cancel item action
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         dismiss(animated: true)
     }
     
-    func saveNewGroup() {
+    func saveGroup() {
         
         guard let imageData = groupImage.image?.pngData() else { return }
-        let group = Group(name: groupName.text!, location: groupLocation.text, genre: groupGenre.text, imageData: imageData)
-        StorageManager.saveObject(group)
+        let newGroup = Group(name: groupName.text!, location: groupLocation.text, genre: groupGenre.text, imageData: imageData)
+        
+        if currentGroup != nil { // обновление существующего объекта (редактирование)
+            try! realm.write {
+                currentGroup?.name = newGroup.name
+                currentGroup?.location = newGroup.location
+                currentGroup?.genre = newGroup.genre
+                currentGroup?.imageData = newGroup.imageData
+            }
+        } else { // добавление нового объекта в БД
+            StorageManager.saveObject(newGroup)
+        }
+    }
+    
+    private func setupEditScreen() {
+        
+        if let group = currentGroup {
+            
+            setupNavigationBar()
+            
+            guard let data = group.imageData, let image = UIImage(data: data) else { return }
+            groupImage.image = image
+            groupImage.contentMode = .scaleAspectFill
+            groupName.text = group.name
+            groupLocation.text = group.location
+            groupGenre.text = group.genre
+        }
+    }
+    
+    private func setupNavigationBar() {
+        navigationItem.leftBarButtonItem = nil // убрать кнопку Cancel
+        saveButton.isEnabled = true
+        
+        // скрываем надпись с кнопки Назад
+        if let topItem = navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        }
+        
+        title = currentGroup?.name // заголовок на NavigationBar
     }
 }
 
-// MARK: TextField delegate
+// MARK: - TextField delegate
 extension NewGroupTableViewController: UITextFieldDelegate {
     
     // скрываем клавиатуру по нажатию на Done
@@ -84,7 +126,7 @@ extension NewGroupTableViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: Image delegate
+// MARK: - Image delegate
 extension NewGroupTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func chooseImagePicker(_ source: UIImagePickerController.SourceType) {

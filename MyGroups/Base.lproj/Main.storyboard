@@ -67,6 +67,7 @@
                                     <outlet property="imageOfGroup" destination="4bu-sM-xdz" id="iLf-jx-731"/>
                                     <outlet property="locationLabel" destination="BGX-F8-xer" id="khx-sL-GqD"/>
                                     <outlet property="nameLabel" destination="DOJ-DP-zjL" id="53I-EY-fjT"/>
+                                    <segue destination="wvY-yA-C01" kind="show" identifier="showDetail" id="Psa-AZ-i6Y"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -85,14 +86,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UnL-RP-7xR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="167" y="62"/>
+            <point key="canvasLocation" x="244" y="62"/>
         </scene>
         <!--New Group-->
         <scene sceneID="Nls-xv-rv3">
             <objects>
                 <tableViewController id="wvY-yA-C01" customClass="NewGroupTableViewController" customModule="MyGroups" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Fx6-NW-90w">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <sections>
@@ -106,13 +107,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoCover" translatesAutoresizingMaskIntoConstraints="NO" id="5pF-5q-Ept">
-                                                    <rect key="frame" x="0.0" y="0.0" width="365" height="250"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="250"/>
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="5pF-5q-Ept" secondAttribute="trailing" constant="10" id="0kC-VK-lGJ"/>
+                                            <constraint firstAttribute="trailing" secondItem="5pF-5q-Ept" secondAttribute="trailing" id="0kC-VK-lGJ"/>
                                             <constraint firstAttribute="bottom" secondItem="5pF-5q-Ept" secondAttribute="bottom" id="3eP-ha-haT"/>
                                             <constraint firstItem="5pF-5q-Ept" firstAttribute="top" secondItem="4ds-c5-g6Z" secondAttribute="top" id="4sO-Dn-Agt"/>
                                             <constraint firstItem="5pF-5q-Ept" firstAttribute="leading" secondItem="4ds-c5-g6Z" secondAttribute="leading" id="7Ub-2Q-xf7"/>
@@ -257,7 +258,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CJl-Im-4iQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="1ca-jz-qWz" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1705" y="62"/>
+            <point key="canvasLocation" x="1812" y="62"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xPh-sS-aZK">
@@ -291,10 +292,13 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d40-7P-b5W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="990" y="62"/>
+            <point key="canvasLocation" x="1026" y="-302"/>
         </scene>
     </scenes>
     <resources>
         <image name="NoCover" width="106.5" height="105.5"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Psa-AZ-i6Y"/>
+    </inferredMetricsTieBreakers>
 </document>
