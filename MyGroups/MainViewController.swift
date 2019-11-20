@@ -11,9 +11,18 @@ import RealmSwift
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
        
-    var groups: Results<Group>!
+    private var groups: Results<Group>!
 //    var isImageChanged = false
-    var isAscendingSortType = true
+    private var searchController = UISearchController(searchResultsController: nil)
+    private var filteredGroups: Results<Group>!
+    private var isSearchBarEmpty: Bool {
+        guard let text = searchController.searchBar.text else { return false }
+        return text.isEmpty
+    }
+    private var isSearchActive: Bool {
+        return searchController.isActive && !isSearchBarEmpty
+    }
+    private var isAscendingSortType = true
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sortButtonItem: UIBarButtonItem!
@@ -23,17 +32,27 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         groups = realm.objects(Group.self)
+        
+        // search controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.isActive = false // hide on start
+        navigationItem.searchController = searchController
+        definesPresentationContext = true // позволяет отпустить строку поиска при переходе на другой экран (не заметил изменений)
     }
 
     // MARK: - Table view data source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isSearchActive {
+            return filteredGroups.isEmpty ? 0 : filteredGroups.count
+        }
         return groups.isEmpty ? 0 : groups.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
 
-        let group = groups[indexPath.row]
+        let group = isSearchActive ? filteredGroups[indexPath.row] : groups[indexPath.row]
         
         cell.nameLabel.text = group.name
         cell.locationLabel.text = group.location
@@ -52,8 +71,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let action = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
             
             // delete data
-            let group = self.groups[indexPath.row]
+            let group = self.isSearchActive ? self.filteredGroups[indexPath.row] : self.groups[indexPath.row]
             StorageManager.deleteObject(group)
+            
             // delete row
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
@@ -68,7 +88,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             guard let dvc = segue.destination as? NewGroupTableViewController else { return }
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
             
-            dvc.currentGroup = groups[indexPath.row]
+            dvc.currentGroup = isSearchActive ? filteredGroups[indexPath.row] : groups[indexPath.row]
         }
     }
     
@@ -102,6 +122,17 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             groups = groups.sorted(byKeyPath: "name", ascending: self.isAscendingSortType)
         }
         
+        tableView.reloadData()
+    }
+}
+
+
+// MARK: - SearcController
+extension MainViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        filteredGroups = groups.filter("name CONTAINS[c] %@ OR location CONTAINS[c] %@", text, text)
         tableView.reloadData()
     }
 }
