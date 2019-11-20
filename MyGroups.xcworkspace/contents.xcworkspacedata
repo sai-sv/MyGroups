@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/admin/Documents/MyGroups/MyGroups/RatingControl.swift">
+   </FileRef>
+   <FileRef
       location = "group:MyGroups.xcodeproj">
    </FileRef>
    <FileRef

@@ -10,7 +10,8 @@ import UIKit
 import RealmSwift
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-       
+    
+    // MARK: - Properties
     private var groups: Results<Group>!
 //    var isImageChanged = false
     private var searchController = UISearchController(searchResultsController: nil)
@@ -28,6 +29,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var sortButtonItem: UIBarButtonItem!
     @IBOutlet weak var sortSegment: UISegmentedControl!
     
+    
+    // MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,7 +38,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // search controller
         searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false // запретить скрывать исходный контент во время поиска
         searchController.isActive = false // hide on start
         navigationItem.searchController = searchController
         definesPresentationContext = true // позволяет отпустить строку поиска при переходе на другой экран (не заметил изменений)
@@ -81,6 +84,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return actionsCOnfiguration
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true) // сброс выделения строки по возврату из экрна деталей
+    }
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -100,12 +107,11 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.reloadData()
     }
     
-    
+    // MARK: - Sorting
     @IBAction func sortButtonItemStateChanged(_ sender: UIBarButtonItem) {
         
         self.isAscendingSortType.toggle()
         sortButtonItem.image = self.isAscendingSortType ? #imageLiteral(resourceName: "AZ") : #imageLiteral(resourceName: "ZA")
-        
         sortData()
     }
     
@@ -113,7 +119,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         sortData()
     }
     
-    // MARK: -
     private func sortData() {
         
         if sortSegment.selectedSegmentIndex == 0 {
