@@ -9,10 +9,11 @@
 import UIKit
 import RealmSwift
 
-class MainViewController: UITableViewController {
+class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
        
     var groups: Results<Group>!
-    var isImageChanged = false
+    var isImageChanged = false    
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,11 +22,11 @@ class MainViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groups.isEmpty ? 0 : groups.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
 
         let group = groups[indexPath.row]
@@ -42,7 +43,7 @@ class MainViewController: UITableViewController {
     }
     
     // MARK: - Table view delegate
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let action = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
             
