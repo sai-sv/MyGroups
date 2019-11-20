@@ -83,9 +83,12 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="YpP-nj-RXv">
                                 <rect key="frame" x="0.0" y="44" width="375" height="32"/>
                                 <segments>
-                                    <segment title="First"/>
-                                    <segment title="Second"/>
+                                    <segment title="Date"/>
+                                    <segment title="Name"/>
                                 </segments>
+                                <connections>
+                                    <action selector="sortSegmentValueChanged:" destination="cSf-xc-FAE" eventType="valueChanged" id="vRd-N5-7da"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -101,7 +104,11 @@
                         <viewLayoutGuide key="safeArea" id="N3M-06-0vS"/>
                     </view>
                     <navigationItem key="navigationItem" title="My Groups" id="Qph-yO-uEV">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="AZ" id="0hv-ut-k8B"/>
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="AZ" id="0hv-ut-k8B">
+                            <connections>
+                                <action selector="sortButtonItemStateChanged:" destination="cSf-xc-FAE" id="HBk-SQ-Bwe"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="SMp-rs-6DD">
                             <connections>
                                 <segue destination="Hfc-4s-xWI" kind="presentation" id="LzJ-jP-0Wa"/>
@@ -109,6 +116,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="sortButtonItem" destination="0hv-ut-k8B" id="C7U-hX-7xb"/>
+                        <outlet property="sortSegment" destination="YpP-nj-RXv" id="a4r-Tw-EuF"/>
                         <outlet property="tableView" destination="PRf-kl-UVg" id="rt1-5a-Aqf"/>
                     </connections>
                 </viewController>
@@ -271,7 +280,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="yYO-cB-vQw">
                             <connections>
-                                <segue destination="1ca-jz-qWz" kind="unwind" unwindAction="unwindSegue:" id="WxZ-Uu-fp9"/>
+                                <segue destination="1ca-jz-qWz" kind="unwind" unwindAction="unwindSegue:" id="kzy-PX-gnS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

@@ -12,8 +12,12 @@ import RealmSwift
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
        
     var groups: Results<Group>!
-    var isImageChanged = false    
+//    var isImageChanged = false
+    var isAscendingSortType = true
+    
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var sortButtonItem: UIBarButtonItem!
+    @IBOutlet weak var sortSegment: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,8 +61,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return actionsCOnfiguration
     }
     
-    
-    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -74,6 +76,31 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         guard let svc = segue.source as? NewGroupTableViewController else { return }
         svc.saveGroup()
+        
+        tableView.reloadData()
+    }
+    
+    
+    @IBAction func sortButtonItemStateChanged(_ sender: UIBarButtonItem) {
+        
+        self.isAscendingSortType.toggle()
+        sortButtonItem.image = self.isAscendingSortType ? #imageLiteral(resourceName: "AZ") : #imageLiteral(resourceName: "ZA")
+        
+        sortData()
+    }
+    
+    @IBAction func sortSegmentValueChanged(_ sender: UISegmentedControl) {
+        sortData()
+    }
+    
+    // MARK: -
+    private func sortData() {
+        
+        if sortSegment.selectedSegmentIndex == 0 {
+            groups = groups.sorted(byKeyPath: "date", ascending: self.isAscendingSortType)
+        } else {
+            groups = groups.sorted(byKeyPath: "name", ascending: self.isAscendingSortType)
+        }
         
         tableView.reloadData()
     }

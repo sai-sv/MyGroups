@@ -14,6 +14,7 @@ class Group: Object {
     @objc dynamic var location: String?
     @objc dynamic var genre: String?
     @objc dynamic var imageData: Data?
+    @objc dynamic var date = Date()
     
     convenience init(name: String, location: String?, genre: String?, imageData: Data?) {
         self.init()
