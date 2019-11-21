@@ -68,9 +68,10 @@ class NewGroupTableViewController: UITableViewController {
         if segue.identifier != "showMap" { return }
         guard let dvc = segue.destination as? MapViewController else { return }
         
-        if currentGroup != nil {
-            dvc.group = currentGroup
-        }
+        dvc.group.name = groupName.text!
+        dvc.group.location = groupLocation.text
+        dvc.group.genre = groupGenre.text
+        dvc.group.imageData = groupImage.image?.pngData()
     }
     
     // navigation bar Cancel item action
