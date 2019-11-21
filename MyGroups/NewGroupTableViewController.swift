@@ -63,6 +63,16 @@ class NewGroupTableViewController: UITableViewController {
         }
     }
     
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier != "showMap" { return }
+        guard let dvc = segue.destination as? MapViewController else { return }
+        
+        if currentGroup != nil {
+            dvc.group = currentGroup
+        }
+    }
+    
     // navigation bar Cancel item action
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         dismiss(animated: true)

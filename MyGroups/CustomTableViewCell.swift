@@ -9,7 +9,12 @@
 import UIKit
 
 class CustomTableViewCell: UITableViewCell {    
-    @IBOutlet weak var imageOfGroup: UIImageView!
+    @IBOutlet weak var imageOfGroup: UIImageView! {
+        didSet {
+            imageOfGroup.layer.cornerRadius = imageOfGroup.frame.size.height / 2
+            imageOfGroup.clipsToBounds = true
+        }
+    }
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var genreLabel: UILabel!

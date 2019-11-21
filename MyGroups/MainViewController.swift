@@ -60,10 +60,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.nameLabel.text = group.name
         cell.locationLabel.text = group.location
         cell.genreLabel.text = group.genre
-        
         cell.imageOfGroup.image = UIImage(data: group.imageData!)
-        cell.imageOfGroup.layer.cornerRadius = cell.imageOfGroup.frame.size.height / 2
-        cell.imageOfGroup.clipsToBounds = true
 
         return cell
     }
