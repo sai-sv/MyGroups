@@ -15,13 +15,15 @@ class Group: Object {
     @objc dynamic var genre: String?
     @objc dynamic var imageData: Data?
     @objc dynamic var date = Date()
+    @objc dynamic var rating = 0.0
     
-    convenience init(name: String, location: String?, genre: String?, imageData: Data?) {
+    convenience init(name: String, location: String?, genre: String?, imageData: Data?, rating: Double) {
         self.init()
         
         self.name = name
         self.location = location
         self.genre = genre
         self.imageData = imageData
+        self.rating = rating
     }
 }

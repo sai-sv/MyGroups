@@ -307,6 +307,7 @@
                         <outlet property="groupImage" destination="5pF-5q-Ept" id="eSy-uA-B57"/>
                         <outlet property="groupLocation" destination="fOs-S6-SwC" id="3sZ-69-LTd"/>
                         <outlet property="groupName" destination="z3K-53-WJv" id="c41-il-FKl"/>
+                        <outlet property="ratingControl" destination="F0P-Me-4jV" id="oXF-gU-ava"/>
                         <outlet property="saveButton" destination="yYO-cB-vQw" id="qYe-vr-eh6"/>
                     </connections>
                 </tableViewController>

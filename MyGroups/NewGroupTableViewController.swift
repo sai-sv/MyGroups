@@ -17,6 +17,7 @@ class NewGroupTableViewController: UITableViewController {
     @IBOutlet weak var groupName: UITextField!
     @IBOutlet weak var groupLocation: UITextField!
     @IBOutlet weak var groupGenre: UITextField!
+    @IBOutlet weak var ratingControl: RatingControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +71,7 @@ class NewGroupTableViewController: UITableViewController {
     func saveGroup() {
         
         guard let imageData = groupImage.image?.pngData() else { return }
-        let newGroup = Group(name: groupName.text!, location: groupLocation.text, genre: groupGenre.text, imageData: imageData)
+        let newGroup = Group(name: groupName.text!, location: groupLocation.text, genre: groupGenre.text, imageData: imageData, rating: Double(ratingControl.rating))
         
         if currentGroup != nil { // обновление существующего объекта (редактирование)
             try! realm.write {
@@ -78,6 +79,7 @@ class NewGroupTableViewController: UITableViewController {
                 currentGroup?.location = newGroup.location
                 currentGroup?.genre = newGroup.genre
                 currentGroup?.imageData = newGroup.imageData
+                currentGroup?.rating = newGroup.rating
             }
         } else { // добавление нового объекта в БД
             StorageManager.saveObject(newGroup)
@@ -96,6 +98,7 @@ class NewGroupTableViewController: UITableViewController {
             groupName.text = group.name
             groupLocation.text = group.location
             groupGenre.text = group.genre
+            ratingControl.rating = Int(group.rating)
         }
     }
     
