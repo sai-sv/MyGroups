@@ -76,6 +76,7 @@ class NewGroupTableViewController: UITableViewController {
             dvc.group.genre = groupGenre.text
             dvc.group.imageData = groupImage.image?.pngData()
         }
+        dvc.delegate = self
         dvc.segueIdentifier = identifier
     }
     
@@ -168,5 +169,14 @@ extension NewGroupTableViewController: UIImagePickerControllerDelegate, UINaviga
         groupImage.clipsToBounds = true
         
         dismiss(animated: true) // скрываем окно
+    }
+}
+
+
+// MARK: - Map
+extension NewGroupTableViewController : MapViewControllerDelegate {
+    
+    func getAddress(_ address: String?) {
+        groupLocation.text = address
     }
 }

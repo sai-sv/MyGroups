@@ -395,6 +395,9 @@
                                 <state key="normal" title="Done">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="doneAction:" destination="ilw-Y5-ciN" eventType="touchUpInside" id="Ojd-Ig-YcJ"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -474,7 +477,7 @@
         <image name="userLocationPin" width="42" height="42"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="3Il-mo-KAR"/>
+        <segue reference="lYd-ee-WiS"/>
         <segue reference="J53-fh-HKH"/>
     </inferredMetricsTieBreakers>
 </document>

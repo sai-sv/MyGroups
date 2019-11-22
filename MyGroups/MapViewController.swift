@@ -10,8 +10,13 @@ import UIKit
 import MapKit
 import CoreLocation
 
+protocol MapViewControllerDelegate {
+    func getAddress(_ address: String?)
+}
+
 class MapViewController: UIViewController {
     
+    var delegate: MapViewControllerDelegate?
     var group = Group()
     let annotationIdentifier = "AnnotationIdentifier"
     let locationManger = CLLocationManager()
@@ -21,7 +26,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var userLocationPinImageView: UIImageView!
-    @IBOutlet weak var doneButton: UIButton!    
+    @IBOutlet weak var doneButton: UIButton!
     
     @IBAction func closeAction() {
         dismiss(animated: true)
@@ -31,10 +36,18 @@ class MapViewController: UIViewController {
         showUserLocation()
     }
     
+    @IBAction func doneAction(_ sender: Any) {
+        if delegate != nil {
+            delegate?.getAddress(addressLabel.text)
+        }
+        dismiss(animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         mapView.delegate = self
+        addressLabel.text = ""
 
         setupMapView()
         checkLocationServices()
@@ -165,6 +178,39 @@ extension MapViewController: MKMapViewDelegate {
         }
             
         return annotationView
+    }
+    
+    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+        
+        let latitude = mapView.centerCoordinate.latitude
+        let longitude = mapView.centerCoordinate.longitude
+        let center = CLLocation(latitude: latitude, longitude: longitude)
+        
+        
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(center) { (placemarks, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            guard let placemark = placemarks?.first else { return }
+            let country = placemark.country
+            let city = placemark.locality
+            
+            DispatchQueue.main.async {
+                
+                var text = ""
+                if let country = country, let city = city {
+                    text = "\(country), \(city)"
+                } else if let country = country {
+                    text = "\(country)"
+                } else if let city = city {
+                    text = "\(city)"
+                }
+                self.addressLabel.text = text
+            }
+        }
     }
 }
 
