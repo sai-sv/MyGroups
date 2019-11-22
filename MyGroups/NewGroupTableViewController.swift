@@ -65,13 +65,18 @@ class NewGroupTableViewController: UITableViewController {
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier != "showMap" { return }
-        guard let dvc = segue.destination as? MapViewController else { return }
+        guard
+            let identifier = segue.identifier,
+            let dvc = segue.destination as? MapViewController
+            else { return }
         
-        dvc.group.name = groupName.text!
-        dvc.group.location = groupLocation.text
-        dvc.group.genre = groupGenre.text
-        dvc.group.imageData = groupImage.image?.pngData()
+        if identifier == "showGroupLocation" {
+            dvc.group.name = groupName.text!
+            dvc.group.location = groupLocation.text
+            dvc.group.genre = groupGenre.text
+            dvc.group.imageData = groupImage.image?.pngData()
+        }
+        dvc.segueIdentifier = identifier
     }
     
     // navigation bar Cancel item action
